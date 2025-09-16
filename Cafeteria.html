@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cafeteria Aurora — Aroma & Afeto</title>
+  <meta name="description" content="Cafeteria Aurora — cafés especiais, doces artesanais e um ambiente acolhedor." />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #0b0e10;
+      --card: #11161a;
+      --muted: #a9b0b7;
+      --brand: #c084fc; /* lilac */
+      --accent: #f59e0b; /* amber */
+      --success: #34d399;
+      --danger: #f87171;
+      --grad1: #c084fc;
+      --grad2: #60a5fa;
+      --grad3: #f59e0b;
+    }
+    html, body { background: var(--bg); }
+    body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji','Segoe UI Emoji'; color: #e7ecf0; }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .ring-soft { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.35); }
+    .hero-grad {
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(192,132,252,0.20), transparent 60%),
+                  radial-gradient(1000px 500px at 80% 0%, rgba(96,165,250,0.18), transparent 60%),
+                  radial-gradient(900px 480px at 50% 100%, rgba(245,158,11,0.08), transparent 60%);
+    }
+    .btn {
+      transition: transform .12s ease, box-shadow .2s ease, opacity .2s ease;
+      box-shadow: 0 8px 24px rgba(192,132,252,.25);
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(192,132,252,.35); }
+    .btn:active { transform: translateY(0); }
+    .tag {
+      background: linear-gradient(90deg, rgba(192,132,252,.12), rgba(96,165,250,.12));
+      border: 1px solid rgba(192,132,252,.25);
+    }
+    .price-badge {
+      background: linear-gradient(180deg, rgba(245,158,11,.18), rgba(245,158,11,.10));
+      border: 1px solid rgba(245,158,11,.45);
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .divider {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      height: 1px;
+    }
+    .chip {
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .shadow-smooth { box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass ring-soft">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+             style="background: conic-gradient(from 140deg, var(--grad1), var(--grad2), var(--grad3)); box-shadow: 0 8px 24px rgba(192,132,252,.35);">
+          <span class="text-lg font-extrabold text-black">☕</span>
+        </div>
+        <div>
+          <div class="text-lg font-extrabold tracking-tight">Cafeteria Aurora</div>
+          <div class="text-xs text-[var(--muted)] -mt-0.5">Aroma & Afeto</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7">
+        <a href="#menu" class="text-sm text-[var(--muted)] hover:text-white transition">Cardápio</a>
+        <a href="#sobre" class="text-sm text-[var(--muted)] hover:text-white transition">Sobre</a>
+        <a href="#avaliacoes" class="text-sm text-[var(--muted)] hover:text-white transition">Avaliações</a>
+        <a href="#contato" class="text-sm text-[var(--muted)] hover:text-white transition">Contato</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="toggleTheme" class="chip px-3 py-2 rounded-lg text-sm hover:opacity-90 transition" aria-label="Alternar tema">
+          Tema
+        </button>
+        <button id="openCart" class="btn px-4 py-2 rounded-xl font-semibold text-black"
+                style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+          Ver Carrinho
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative hero-grad">
+    <div class="absolute inset-x-0 -top-24 h-64 opacity-30 pointer-events-none"
+         style="background: radial-gradient(60% 60% at 50% 0%, rgba(192,132,252,.35), transparent 60%);"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="tag inline-flex items-center gap-2 text-[13px] px-3 py-1 rounded-full text-white">
+          <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent)"></span>
+          Café especial torrado na casa
+        </span>
+        <h1 class="mt-5 text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+          Onde o café encontra
+          <span class="bg-clip-text text-transparent" style="background-image: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            momentos inesquecíveis
+          </span>
+        </h1>
+        <p class="mt-5 text-[17px] text-[var(--muted)] max-w-xl">
+          Grãos selecionados, extrações no ponto e receitas autorais. Sinta o aroma, prove o afeto e leve o aconchego com você.
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="#menu" class="btn inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-black"
+             style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Ver Cardápio
+            <span class="text-xl -mr-1">→</span>
+          </a>
+          <button id="btnAssinatura" class="chip px-5 py-3 rounded-xl font-semibold hover:opacity-90">
+            Clube do Café
+          </button>
+        </div>
+
+        <div class="mt-8 flex items-center gap-6 text-sm text-[var(--muted)]">
+          <div class="flex items-center gap-2">
+            <span>⭐</span><span>4.9/5 (1.2k+)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>⏱️</span><span>Retirada em 15 min</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>🌱</span><span>Opções veganas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <!-- Ilustração em SVG substitui imagens externas -->
+        <div class="floating">
+          <svg viewBox="0 0 400 300" class="w-full h-auto">
+            <defs>
+              <linearGradient id="mugGrad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="100%" stop-color="#60a5fa"/>
+              </linearGradient>
+              <linearGradient id="steamGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0.1)"/>
+              </linearGradient>
+            </defs>
+            <!-- Base -->
+            <ellipse cx="200" cy="260" rx="120" ry="22" fill="rgba(0,0,0,0.35)"/>
+            <!-- Caneca -->
+            <rect x="110" y="100" rx="18" ry="18" width="140" height="120" fill="url(#mugGrad)" opacity="0.95"/>
+            <rect x="230" y="120" rx="28" ry="28" width="40" height="70" fill="url(#mugGrad)" opacity="0.85"/>
+            <!-- Café -->
+            <ellipse cx="180" cy="110" rx="70" ry="16" fill="#3b2b23" opacity="0.95"/>
+            <!-- Coração/latte art -->
+            <path d="M170 118
+                     c -14 -14 -34 -9 -34 10
+                     c 0 24 30 38 34 50
+                     c 4 -12 34 -26 34 -50
+                     c 0 -19 -20 -24 -34 -10z"
+                  fill="white" opacity="0.9"/>
+            <!-- Vapor -->
+            <path d="M150 70 C145 50 170 40 165 25" stroke="white" stroke-opacity="0.6" stroke-width="3" fill="none"/>
+            <path d="M185 65 C180 45 205 35 200 20" stroke="white" stroke-opacity="0.55" stroke-width="3" fill="none"/>
+            <path d="M220 68 C215 48 240 38 235 22" stroke="white" stroke-opacity="0.5" stroke-width="3" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="absolute -bottom-6 left-6 right-6 grid grid-cols-3 gap-3">
+          <div class="card rounded-xl p-4 text-center">
+            <div class="text-2xl">🌎</div>
+            <div class="mt-2 text-sm font-semibold">Origem seletiva</div>
+            <div class="text-xs text-[var(--muted)] mt-1">Brasil • Etiópia</div>
+          </div>
+          <div class="card rounded-xl p-4 text-center">
+            <div class="text-2xl">🔥</div>
+            <div class="mt-2 text-sm font-semibold">Torra fresca</div>
+            <div class="text-xs text-[var(--muted)] mt-1">Semanal</div>
+          </div>
+          <div class="card rounded-xl p-4 text-center">
+            <div class="text-2xl">🥐</div>
+            <div class="mt-2 text-sm font-semibold">Doçaria</div>
+            <div class="text-xs text-[var(--muted)] mt-1">Artesanal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Destaques -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-10 mt-24">
+    <div class="flex items-end justify-between gap-6">
+      <div>
+        <h2 class="text-3xl lg:text-4xl font-extrabold tracking-tight">Destaques da Casa</h2>
+        <p class="text-[var(--muted)] mt-2">Receitas queridinhas preparadas com carinho.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <button id="scrollLeft" class="chip px-3 py-2 rounded-lg">←</button>
+        <button id="scrollRight" class="chip px-3 py-2 rounded-lg">→</button>
+      </div>
+    </div>
+
+    <div id="destaques" class="mt-6 overflow-x-auto no-scrollbar">
+      <div class="flex gap-5 min-w-max">
+        <!-- Cards simples com botão de adicionar -->
+        <div class="card rounded-2xl p-5 w-72 ring-soft">
+          <div class="flex items-center justify-between">
+            <span class="chip px-2.5 py-1 rounded-full text-xs">Clássico</span>
+            <span class="price-badge text-sm px-2.5 py-1 rounded-full text-black font-semibold">R$ 12</span>
+          </div>
+          <div class="mt-4 text-xl font-bold">Espresso Duplo</div>
+          <p class="text-sm text-[var(--muted)] mt-1">Intenso, cremoso e aromático.</p>
+          <button data-id="1" class="add btn mt-5 w-full px-4 py-2 rounded-xl font-semibold text-black"
+                  style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Adicionar
+          </button>
+        </div>
+
+        <div class="card rounded-2xl p-5 w-72 ring-soft">
+          <div class="flex items-center justify-between">
+            <span class="chip px-2.5 py-1 rounded-full text-xs">Gelado</span>
+            <span class="price-badge text-sm px-2.5 py-1 rounded-full text-black font-semibold">R$ 18</span>
+          </div>
+          <div class="mt-4 text-xl font-bold">Latte Caramelo</div>
+          <p class="text-sm text-[var(--muted)] mt-1">Equilíbrio perfeito de doçura.</p>
+          <button data-id="2" class="add btn mt-5 w-full px-4 py-2 rounded-xl font-semibold text-black"
+                  style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Adicionar
+          </button>
+        </div>
+
+        <div class="card rounded-2xl p-5 w-72 ring-soft">
+          <div class="flex items-center justify-between">
+            <span class="chip px-2.5 py-1 rounded-full text-xs">Autorais</span>
+            <span class="price-badge text-sm px-2.5 py-1 rounded-full text-black font-semibold">R$ 22</span>
+          </div>
+          <div class="mt-4 text-xl font-bold">Mocha Aurora</div>
+          <p class="text-sm text-[var(--muted)] mt-1">Chocolate 70% com notas florais.</p>
+          <button data-id="3" class="add btn mt-5 w-full px-4 py-2 rounded-xl font-semibold text-black"
+                  style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Adicionar
+          </button>
+        </div>
+
+        <div class="card rounded-2xl p-5 w-72 ring-soft">
+          <div class="flex items-center justify-between">
+            <span class="chip px-2.5 py-1 rounded-full text-xs">Padaria</span>
+            <span class="price-badge text-sm px-2.5 py-1 rounded-full text-black font-semibold">R$ 10</span>
+          </div>
+          <div class="mt-4 text-xl font-bold">Croissant Manteiga</div>
+          <p class="text-sm text-[var(--muted)] mt-1">Folhado, leve e dourado.</p>
+          <button data-id="4" class="add btn mt-5 w-full px-4 py-2 rounded-xl font-semibold text-black"
+                  style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cardápio -->
+  <section id="menu" class="max-w-7xl mx-auto px-6 lg:px-10 mt-24">
+    <div class="flex items-end justify-between gap-6">
+      <div>
+        <h2 class="text-3xl lg:text-4xl font-extrabold tracking-tight">Cardápio</h2>
+        <p class="text-[var(--muted)] mt-2">Escolha por categoria e personalize seu café.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button data-cat="cafes" class="filter chip px-3 py-2 rounded-lg text-sm">Cafés</button>
+        <button data-cat="gelados" class="filter chip px-3 py-2 rounded-lg text-sm">Gelados</button>
+        <button data-cat="doces" class="filter chip px-3 py-2 rounded-lg text-sm">Doces</button>
+        <button data-cat="tudo" class="filter chip px-3 py-2 rounded-lg text-sm">Tudo</button>
+      </div>
+    </div>
+
+    <div id="listaMenu" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
+  </section>
+
+  <!-- Sobre -->
+  <section id="sobre" class="max-w-7xl mx-auto px-6 lg:px-10 mt-24">
+    <div class="grid lg:grid-cols-2 gap-10">
+      <div class="card rounded-2xl p-8 ring-soft">
+        <h3 class="text-2xl font-extrabold">Nossa história</h3>
+        <div class="divider my-5"></div>
+        <p class="text-[var(--muted)] leading-relaxed">
+          Nascemos de um sonho simples: servir café que abraça. Trabalhamos com pequenos produtores,
+          priorizamos sustentabilidade e celebramos encontros. Cada xícara é feita para desacelerar o seu dia.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="tag px-3 py-1 rounded-full text-xs">Comércio justo</span>
+          <span class="tag px-3 py-1 rounded-full text-xs">Zero plástico</span>
+          <span class="tag px-3 py-1 rounded-full text-xs">Torra própria</span>
+        </div>
+      </div>
+      <div class="card rounded-2xl p-8 ring-soft">
+        <h3 class="text-2xl font-extrabold">Horários & Endereço</h3>
+        <div class="divider my-5"></div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="chip rounded-xl p-4">
+            <div class="text-sm text-[var(--muted)]">Seg–Sex</div>
+            <div class="font-semibold mt-1">08h–20h</div>
+          </div>
+          <div class="chip rounded-xl p-4">
+            <div class="text-sm text-[var(--muted)]">Sáb–Dom</div>
+            <div class="font-semibold mt-1">09h–18h</div>
+          </div>
+          <div class="chip rounded-xl p-4 sm:col-span-2">
+            <div class="text-sm text-[var(--muted)]">Endereço</div>
+            <div class="font-semibold mt-1">Rua das Flores, 123 — Centro</div>
+          </div>
+        </div>
+        <button class="btn mt-6 px-5 py-3 rounded-xl font-semibold text-black"
+                style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+          Como chegar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avaliações -->
+  <section id="avaliacoes" class="max-w-7xl mx-auto px-6 lg:px-10 mt-24">
+    <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight">Amor em cada gole</h3>
+    <p class="text-[var(--muted)] mt-2">O que nossos clientes dizem.</p>
+
+    <div class="grid md:grid-cols-3 gap-6 mt-8">
+      <div class="card rounded-2xl p-6 ring-soft">
+        <div class="text-amber-400">★★★★★</div>
+        <p class="mt-3 text-sm text-[var(--muted)]">Ambiente aconchegante e café impecável. O Mocha Aurora virou favorito!</p>
+        <div class="mt-4 text-sm font-semibold">Marina R.</div>
+      </div>
+      <div class="card rounded-2xl p-6 ring-soft">
+        <div class="text-amber-400">★★★★★</div>
+        <p class="mt-3 text-sm text-[var(--muted)]">Croissant quentinho e espresso perfeito. Atendimento carinhoso.</p>
+        <div class="mt-4 text-sm font-semibold">Carlos A.</div>
+      </div>
+      <div class="card rounded-2xl p-6 ring-soft">
+        <div class="text-amber-400">★★★★★</div>
+        <p class="mt-3 text-sm text-[var(--muted)]">Opções veganas muito saborosas. Voltarei sempre!</p>
+        <div class="mt-4 text-sm font-semibold">Bianca L.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato (Demo) -->
+  <section id="contato" class="max-w-7xl mx-auto px-6 lg:px-10 mt-24 mb-28">
+    <div class="card rounded-2xl p-8 ring-soft">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h3 class="text-2xl font-extrabold">Fale com a gente</h3>
+          <p class="text-[var(--muted)] mt-1">Responderemos o mais rápido possível.</p>
+        </div>
+        <span class="tag px-3 py-1 rounded-full text-xs">Formulário de demonstração</span>
+      </div>
+      <div class="divider my-6"></div>
+
+      <form id="contatoForm" class="grid md:grid-cols-2 gap-5">
+        <div class="flex flex-col gap-2">
+          <label class="text-sm text-[var(--muted)]">Seu nome</label>
+          <input required type="text" placeholder="Ex.: Ana Souza"
+                 class="w-full rounded-xl px-4 py-3 bg-[#0f1418] border border-white/10 outline-none focus:border-white/20"/>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-sm text-[var(--muted)]">E-mail</label>
+          <input required type="email" placeholder="voce@email.com"
+                 class="w-full rounded-xl px-4 py-3 bg-[#0f1418] border border-white/10 outline-none focus:border-white/20"/>
+        </div>
+        <div class="md:col-span-2 flex flex-col gap-2">
+          <label class="text-sm text-[var(--muted)]">Mensagem</label>
+          <textarea rows="4" placeholder="Como podemos ajudar?"
+                    class="w-full rounded-xl px-4 py-3 bg-[#0f1418] border border-white/10 outline-none focus:border-white/20"></textarea>
+        </div>
+        <div class="md:col-span-2 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-[var(--muted)]">
+            <span>🔒</span>
+            <span>Sem envio real — apenas demonstração</span>
+          </div>
+          <button type="submit" class="btn px-5 py-3 rounded-xl font-semibold text-black"
+                  style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Enviar
+          </button>
+        </div>
+      </form>
+      <div id="contatoFeedback" class="hidden mt-4 text-sm"></div>
+    </div>
+  </section>
+
+  <!-- Carrinho -->
+  <div id="cartPanel" class="fixed inset-y-0 right-0 w-full sm:w-[420px] translate-x-full transition-transform duration-300 z-[60]">
+    <div class="h-full card ring-soft rounded-none sm:rounded-l-2xl p-0 flex flex-col">
+      <div class="p-5 flex items-center justify-between border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🧺</span>
+          <div class="font-bold">Seu Carrinho</div>
+        </div>
+        <button id="closeCart" class="chip px-3 py-1.5 rounded-lg">Fechar</button>
+      </div>
+      <div id="cartItems" class="p-5 flex-1 overflow-auto">
+        <div class="text-sm text-[var(--muted)]">Seu carrinho está vazio.</div>
+      </div>
+      <div class="p-5 border-t border-white/10">
+        <div class="flex items-center justify-between">
+          <span class="text-[var(--muted)]">Total</span>
+          <span id="cartTotal" class="text-xl font-extrabold">R$ 0,00</span>
+        </div>
+        <button id="checkoutBtn" class="btn mt-4 w-full px-5 py-3 rounded-xl font-semibold text-black"
+                style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+          Finalizar (Demo)
+        </button>
+        <div class="text-xs text-[var(--muted)] mt-2">
+          Simulação apenas — não coletamos dados de pagamento.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[70] hidden">
+    <div class="chip rounded-xl px-4 py-3 text-sm shadow-smooth">
+      <span id="toastMsg">Item adicionado ao carrinho!</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10">
+    <div class="divider"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-[var(--muted)]">© <span id="year"></span> Cafeteria Aurora. Todos os direitos reservados.</div>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="#" class="chip px-3 py-1.5 rounded-lg hover:opacity-90">Instagram</a>
+        <a href="#" class="chip px-3 py-1.5 rounded-lg hover:opacity-90">Facebook</a>
+        <a href="#" class="chip px-3 py-1.5 rounded-lg hover:opacity-90">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dados do menu (amostra pequena)
+    const itens = [
+      { id: 1, nome: "Espresso Duplo", preco: 12, cat: "cafes", desc: "Dose dupla, encorpado e cremoso.", badge: "Clássico" },
+      { id: 2, nome: "Latte Caramelo", preco: 18, cat: "gelados", desc: "Cremoso com toque de caramelo.", badge: "Gelado" },
+      { id: 3, nome: "Mocha Aurora", preco: 22, cat: "cafes", desc: "Chocolate 70% e notas florais.", badge: "Autorais" },
+      { id: 4, nome: "Croissant Manteiga", preco: 10, cat: "doces", desc: "Folhado feito na casa.", badge: "Padaria" },
+      { id: 5, nome: "Cappuccino", preco: 16, cat: "cafes", desc: "Espresso, leite vaporizado e espuma.", badge: "Clássico" },
+      { id: 6, nome: "Cold Brew", preco: 17, cat: "gelados", desc: "Extração lenta e refrescante.", badge: "Gelado" }
+    ];
+
+    const formatBRL = (n) =>
+      n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+    // Renderização do cardápio
+    const listaMenu = document.getElementById("listaMenu");
+    const filtros = document.querySelectorAll(".filter");
+    let filtroAtivo = "tudo";
+
+    function renderMenu() {
+      const data = filtroAtivo === "tudo" ? itens : itens.filter(i => i.cat === filtroAtivo);
+      listaMenu.innerHTML = "";
+      for (const item of data) {
+        const card = document.createElement("div");
+        card.className = "card rounded-2xl p-5 ring-soft flex flex-col";
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="chip px-2.5 py-1 rounded-full text-xs">${item.badge}</span>
+            <span class="price-badge text-sm px-2.5 py-1 rounded-full text-black font-semibold">${formatBRL(item.preco)}</span>
+          </div>
+          <div class="mt-4 text-xl font-bold">${item.nome}</div>
+          <p class="text-sm text-[var(--muted)] mt-1">${item.desc}</p>
+          <div class="mt-4 flex items-center gap-2">
+            <button data-id="${item.id}" class="menos chip px-3 py-2 rounded-lg">−</button>
+            <input data-id="${item.id}" class="qtd w-14 text-center rounded-lg bg-[#0f1418] border border-white/10 py-2" value="1" />
+            <button data-id="${item.id}" class="mais chip px-3 py-2 rounded-lg">+</button>
+          </div>
+          <button data-id="${item.id}" class="add btn mt-4 w-full px-4 py-2 rounded-xl font-semibold text-black"
+            style="background: linear-gradient(90deg, var(--grad1), var(--grad2));">
+            Adicionar ao carrinho
+          </button>
+        `;
+        listaMenu.appendChild(card);
+      }
+      bindItemControls();
+    }
+
+    // Quantidade e adicionar
+    function bindItemControls() {
+      listaMenu.querySelectorAll(".mais").forEach(btn => {
+        btn.onclick = () => {
+          const id = +btn.getAttribute("data-id");
+          const input = listaMenu.querySelector(`input.qtd[data-id="${id}"]`);
+          input.value = Math.min(9, (+input.value || 1) + 1);
+        };
+      });
+      listaMenu.querySelectorAll(".menos").forEach(btn => {
+        btn.onclick = () => {
+          const id = +btn.getAttribute("data-id");
+          const input = listaMenu.querySelector(`input.qtd[data-id="${id}"]`);
+          input.value = Math.max(1, (+input.value || 1) - 1);
+        };
+      });
+      listaMenu.querySelectorAll(".add").forEach(btn => {
+        btn.onclick = () => {
+          const id = +btn.getAttribute("data-id");
+          const input = listaMenu.querySelector(`input.qtd[data-id="${id}"]`);
+          addToCart(id, Math.max(1, +input.value || 1));
+        };
+      });
+    }
+
+    filtros.forEach(f => {
+      f.addEventListener("click", () => {
+        filtroAtivo = f.dataset.cat;
+        filtros.forEach(x => x.classList.remove("ring-2"));
+        f.classList.add("ring-2");
+        renderMenu();
+      });
+    });
+
+    // Destaques - rolagem
+    document.getElementById("scrollLeft").onclick = () => {
+      document.getElementById("destaques").scrollBy({ left: -300, behavior: "smooth" });
+    };
+    document.getElementById("scrollRight").onclick = () => {
+      document.getElementById("destaques").scrollBy({ left: 300, behavior: "smooth" });
+    };
+
+    // Carrinho básico (armazenamento em memória)
+    const cartPanel = document.getElementById("cartPanel");
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+    const openCart = document.getElementById("openCart");
+    const closeCart = document.getElementById("closeCart");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const toast = document.getElementById("toast");
+    const toastMsg = document.getElementById("toastMsg");
+    let cart = []; // [{id, nome, preco, qtd}]
+
+    function toggleCart(show) {
+      cartPanel.style.transform = show ? "translateX(0)" : "translateX(100%)";
+    }
+    openCart.onclick = () => toggleCart(true);
+    closeCart.onclick = () => toggleCart(false);
+
+    function addToCart(id, qtd = 1) {
+      const item = itens.find(i => i.id === id);
+      if (!item) return;
+      const existing = cart.find(c => c.id === id);
+      if (existing) existing.qtd += qtd;
+      else cart.push({ id, nome: item.nome, preco: item.preco, qtd });
+      showToast("Adicionado ao carrinho!");
+      renderCart();
+    }
+
+    function renderCart() {
+      cart = cart.filter(c => c.qtd > 0);
+      if (!cart.length) {
+        cartItems.innerHTML = `<div class="text-sm text-[var(--muted)]">Seu carrinho está vazio.</div>`;
+        cartTotal.textContent = formatBRL(0);
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      cartItems.innerHTML = "";
+      let total = 0;
+
+      for (const c of cart) {
+        total += c.preco * c.qtd;
+        const row = document.createElement("div");
+        row.className = "flex items-center justify-between gap-3 py-3 border-b border-white/10 last:border-0";
+        row.innerHTML = `
+          <div class="min-w-0">
+            <div class="font-semibold truncate">${c.nome}</div>
+            <div class="text-xs text-[var(--muted)]">${formatBRL(c.preco)} • ${c.qtd} un.</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button aria-label="Diminuir" class="chip px-2 py-1 rounded-lg" data-act="dec" data-id="${c.id}">−</button>
+            <button aria-label="Aumentar" class="chip px-2 py-1 rounded-lg" data-act="inc" data-id="${c.id}">+</button>
+            <button aria-label="Remover" class="chip px-2 py-1 rounded-lg text-red-300" data-act="rem" data-id="${c.id}">✕</button>
+          </div>
+        `;
+        frag.appendChild(row);
+      }
+      cartItems.appendChild(frag);
+      cartTotal.textContent = formatBRL(total);
+
+      // Controles por item
+      cartItems.querySelectorAll("button").forEach(b => {
+        const id = +b.getAttribute("data-id");
+        const act = b.getAttribute("data-act");
+        b.onclick = () => {
+          const idx = cart.findIndex(x => x.id === id);
+          if (idx === -1) return;
+          if (act === "inc") cart[idx].qtd++;
+          if (act === "dec") cart[idx].qtd = Math.max(0, cart[idx].qtd - 1);
+          if (act === "rem") cart.splice(idx, 1);
+          renderCart();
+        };
+      });
+    }
+
+    checkoutBtn.onclick = () => {
+      if (!cart.length) return showToast("Seu carrinho está vazio.");
+      showToast("Pedido enviado! (Demonstração)");
+      cart = [];
+      renderCart();
+      setTimeout(() => toggleCart(false), 900);
+    };
+
+    // Toast simples
+    let toastTimer;
+    function showToast(msg) {
+      toastMsg.textContent = msg;
+      toast.classList.remove("hidden");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add("hidden"), 1600);
+    }
+
+    // Tema claro/escuro básico via CSS vars
+    const toggleTheme = document.getElementById("toggleTheme");
+    let dark = true;
+    toggleTheme.onclick = () => {
+      dark = !dark;
+      if (dark) {
+        document.documentElement.style.setProperty('--bg', '#0b0e10');
+        document.documentElement.style.setProperty('--card', '#11161a');
+        document.body.style.color = '#e7ecf0';
+        showToast("Modo escuro");
+      } else {
+        document.documentElement.style.setProperty('--bg', '#f5f7fb');
+        document.documentElement.style.setProperty('--card', '#ffffff');
+        document.body.style.color = '#0b0e10';
+        showToast("Modo claro");
+      }
+    };
+
+    // Clube do Café (demo)
+    document.getElementById("btnAssinatura").onclick = () => {
+      showToast("Clube do Café: em breve!");
+    };
+
+    // Formulário de contato (DEMO)
+    const contatoForm = document.getElementById("contatoForm");
+    const contatoFeedback = document.getElementById("contatoFeedback");
+    contatoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      contatoFeedback.className = "mt-4 text-sm text-green-300";
+      contatoFeedback.textContent = "Recebemos sua mensagem! (Demonstração)";
+      contatoFeedback.classList.remove("hidden");
+      contatoForm.reset();
+    });
+
+    // Ações globais
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Inicialização
+    renderMenu();
+
+    // Acessibilidade: fechar carrinho com ESC
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") toggleCart(false);
+    });
+
+    // Botões "Adicionar" nos Destaques
+    document.querySelectorAll(".add").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = +btn.getAttribute("data-id");
+        addToCart(id, 1);
+      });
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980007ea93205444',t:'MTc1ODAyMjIxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
